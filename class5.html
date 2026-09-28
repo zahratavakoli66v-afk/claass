@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>باغ یادگیری - ریاضی پنجم</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffb347">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="باغ یادگیری">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <style>
+        /* ============================================
+           RESET & BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Vazir', 'Tahoma', sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #f9e7b3, #f5d9a0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 750px;
+            width: 100%;
+            background: #ffffffdd;
+            backdrop-filter: blur(8px);
+            border-radius: 80px 20px 80px 20px;
+            padding: 25px 20px 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border: 4px solid #ffb347;
+        }
+        .back-home {
+            display: inline-block;
+            background: #4d2e1b;
+            color: #ffdd99;
+            padding: 8px 20px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 0 #1a0f08;
+            transition: 0.1s;
+        }
+        .back-home:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #1a0f08;
+        }
+        .back-elementary {
+            display: inline-block;
+            background: #2980b9;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 0 #1a5276;
+            transition: 0.1s;
+        }
+        .back-elementary:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #1a5276;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #d45a1a;
+            text-shadow: 3px 3px 0 #ffeeaa;
+            margin-bottom: 3px;
+            letter-spacing: 2px;
+        }
+        .subtitle {
+            font-size: 0.9rem;
+            color: #7a4a2a;
+            background: #ffdd99;
+            display: inline-block;
+            padding: 3px 20px;
+            border-radius: 50px;
+            margin-bottom: 18px;
+            font-weight: bold;
+        }
+
+        /* ============================================
+           USER DASHBOARD
+           ============================================ */
+        .user-dashboard {
+            background: linear-gradient(135deg, #2d1b0e, #4d2e1b);
+            border-radius: 30px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            color: #ffdd99;
+            box-shadow: 0 8px 0 #1a0f08;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .user-avatar {
+            background: #ffb347;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #2d1b0e;
+        }
+        .user-details {
+            text-align: right;
+        }
+        .user-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .user-phone {
+            font-size: 0.7rem;
+            color: #ffdd99;
+            opacity: 0.8;
+        }
+        .user-stats {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            background: #1a0f08;
+            padding: 6px 14px;
+            border-radius: 50px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffb347;
+        }
+        .stat-label {
+            font-size: 0.6rem;
+            opacity: 0.7;
+            display: block;
+        }
+        .btn-logout {
+            background: #e74c3c;
+            border: none;
+            border-radius: 60px;
+            padding: 5px 14px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 3px 0 #a93226;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .btn-logout:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #a93226;
+        }
+
+        /* ============================================
+           TOPIC SELECTOR (فصل‌های کتاب)
+           ============================================ */
+        .topic-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .topic-btn {
+            padding: 12px 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 3px solid #cc8f5a;
+            border-radius: 60px 15px 60px 15px;
+            background: #fff5e6;
+            color: #4d2e1b;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 5px 0 #b97c4a;
+        }
+        .topic-btn.active {
+            background: #ffb347;
+            color: #2d1b0e;
+            transform: scale(0.96);
+            box-shadow: 0 2px 0 #b97c4a;
+            border-color: #ffb347;
+        }
+        .topic-btn:active {
+            transform: scale(0.94);
+            box-shadow: 0 1px 0 #b97c4a;
+        }
+        .topic-icon {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 3px;
+        }
+
+        /* ============================================
+           VIDEO SECTION
+           ============================================ */
+        .video-section {
+            margin: 10px 0 18px;
+            padding: 12px;
+            background: #e8f0fe;
+            border-radius: 60px 20px 60px 20px;
+            border: 2px solid #2980b9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .video-section .video-icon {
+            font-size: 2rem;
+        }
+        .video-section .video-text {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #1a5276;
+        }
+        .video-btn {
+            background: #2980b9;
+            border: none;
+            border-radius: 60px;
+            padding: 8px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 4px 0 #1a5276;
+            cursor: pointer;
+            transition: 0.1s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .video-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #1a5276;
+        }
+        .video-btn:hover {
+            background: #1a5276;
+        }
+
+        /* ============================================
+           LEVEL INFO
+           ============================================ */
+        .level-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            background: #fff5e6;
+            padding: 8px 16px;
+            border-radius: 60px;
+            border: 2px solid #ffb347;
+            flex-wrap: wrap;
+        }
+        .level-info span {
+            font-weight: bold;
+            color: #4d2e1b;
+            font-size: 0.95rem;
+        }
+        .level-info .highlight {
+            color: #d45a1a;
+            font-size: 1.1rem;
+        }
+
+        /* ============================================
+           QUESTION CARD
+           ============================================ */
+        .question-card {
+            background: #fef7e9;
+            border-radius: 60px 20px 60px 20px;
+            padding: 20px 12px;
+            border: 3px dashed #ff8c42;
+            margin-bottom: 18px;
+            min-height: 200px;
+        }
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2d1b0e;
+            margin-bottom: 10px;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            line-height: 2rem;
+            padding: 0 8px;
+        }
+        .question-text .math {
+            font-family: 'Times New Roman', 'Vazir', serif;
+            font-size: 1.6rem;
+            color: #c0392b;
+            direction: ltr;
+            display: inline-block;
+            padding: 0 4px;
+        }
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 10px 0 12px;
+        }
+        .option-btn {
+            background: #f5d6b3;
+            border: 4px solid #cc8f5a;
+            border-radius: 100px;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2d1b0e;
+            min-width: 65px;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 6px 0 #8b5e38;
+            flex: 1 0 auto;
+            max-width: 130px;
+        }
+        .option-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #8b5e38;
+        }
+        .option-btn.correct-highlight {
+            background: #6fcf97;
+            border-color: #27ae60;
+            box-shadow: 0 0 15px #6fcf97;
+        }
+        .option-btn.wrong-highlight {
+            background: #f28b82;
+            border-color: #c0392b;
+            box-shadow: 0 0 15px #f28b82;
+        }
+        .option-btn:disabled {
+            opacity: 0.7;
+            transform: translateY(4px);
+            box-shadow: 0 3px 0 #8b5e38;
+            cursor: not-allowed;
+        }
+
+        /* ============================================
+           FEEDBACK
+           ============================================ */
+        .feedback {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 60px;
+            margin: 6px 0;
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .feedback.correct {
+            color: #1e7e34;
+            background: #d5f5e3;
+        }
+        .feedback.wrong {
+            color: #922b21;
+            background: #fadbd8;
+        }
+        .feedback.info {
+            color: #1a5276;
+            background: #d6eaf8;
+        }
+        .feedback.level-complete {
+            color: #1a5276;
+            background: #fef9e7;
+            border: 3px solid #f1c40f;
+        }
+        .feedback.all-done {
+            color: #1a5276;
+            background: #e8f8f5;
+            border: 3px solid #1abc9c;
+        }
+
+        /* ============================================
+           PROGRESS BAR
+           ============================================ */
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background: #e0c9b0;
+            border-radius: 50px;
+            margin: 8px 0 6px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffb347, #ff8c42);
+            border-radius: 50px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .next-btn {
+            background: #ffa726;
+            border: none;
+            border-radius: 60px;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2d1b0e;
+            box-shadow: 0 6px 0 #b86d1c;
+            cursor: pointer;
+            transition: 0.1s;
+            margin-top: 5px;
+            width: 100%;
+        }
+        .next-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #b86d1c;
+        }
+        .next-btn:disabled {
+            opacity: 0.5;
+            transform: translateY(4px);
+            box-shadow: 0 3px 0 #b86d1c;
+            pointer-events: none;
+        }
+        .btn-restart {
+            background: #27ae60;
+            border: none;
+            border-radius: 60px;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 6px 0 #1e7e34;
+            cursor: pointer;
+            transition: 0.1s;
+            margin-top: 5px;
+            width: 100%;
+        }
+        .btn-restart:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #1e7e34;
+        }
+
+        /* ============================================
+           MODAL
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: #fff5e6;
+            border-radius: 60px 20px 60px 20px;
+            padding: 30px 20px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border: 4px solid #ffb347;
+            animation: popIn 0.3s ease;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-box h2 {
+            color: #2d1b0e;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .modal-box label {
+            display: block;
+            text-align: right;
+            font-weight: bold;
+            color: #4d2e1b;
+            margin-top: 10px;
+            margin-bottom: 4px;
+        }
+        .modal-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 3px solid #cc8f5a;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: #fff;
+            direction: ltr;
+            text-align: center;
+        }
+        .modal-box input:focus {
+            border-color: #ffb347;
+            outline: none;
+            box-shadow: 0 0 15px #ffb34755;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        .modal-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 60px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 4px 0 #8b5e38;
+        }
+        .modal-actions button:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #8b5e38;
+        }
+        .btn-login {
+            background: #ffb347;
+            color: #2d1b0e;
+        }
+        .btn-register {
+            background: #27ae60;
+            color: #fff;
+            box-shadow: 0 4px 0 #1e7e34;
+        }
+        .btn-close-modal {
+            background: #e74c3c;
+            color: #fff;
+            box-shadow: 0 4px 0 #a93226;
+            flex: 0.4;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 550px) {
+            .game-container { padding: 12px 8px; }
+            h1 { font-size: 1.5rem; }
+            .user-dashboard { flex-direction: column; align-items: stretch; }
+            .user-stats { justify-content: center; }
+            .topic-selector { grid-template-columns: 1fr 1fr; gap: 6px; }
+            .topic-btn { padding: 10px 6px; font-size: 0.75rem; }
+            .topic-icon { font-size: 1.2rem; }
+            .question-text { font-size: 1.1rem; line-height: 1.7rem; }
+            .question-text .math { font-size: 1.3rem; }
+            .option-btn { font-size: 1rem; padding: 8px 12px; min-width: 55px; max-width: 100px; }
+            .feedback { font-size: 1rem; }
+            .level-info { gap: 12px; font-size: 0.8rem; }
+            .stat-value { font-size: 0.9rem; }
+            .modal-box { padding: 18px 12px; }
+            .video-section { flex-direction: column; gap: 6px; }
+            .video-btn { width: 100%; text-align: center; }
+        }
+        @media (max-width: 400px) {
+            .topic-selector { grid-template-columns: 1fr 1fr; }
+            .option-btn { font-size: 0.85rem; padding: 6px 8px; min-width: 45px; max-width: 85px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- دکمه‌های بازگشت -->
+        <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:8px;">
+            <a href="elementary.html" class="back-elementary">📚 بازگشت به ابتدایی</a>
+            <a href="index.html" class="back-home">🏠 صفحه اصلی</a>
+        </div>
+
+        <h1>📗 ریاضی پنجم</h1>
+        <div class="subtitle">✨ بر اساس کتاب ریاضی پایه پنجم دبستان ✨</div>
+
+        <!-- ==========================================
+        بخش اول: داشبورد کاربر
+        ========================================== -->
+        <div class="user-dashboard" id="userDashboard">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">👤</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">میهمان عزیز</div>
+                    <div class="user-phone" id="userPhone">وارد نشده‌اید</div>
+                </div>
+            </div>
+            <div class="user-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="userLevel">⭐ 0</div>
+                    <span class="stat-label">لول</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="userCoin">💰 0</div>
+                    <span class="stat-label">سکه</span>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="userGPA">📊 0.0</div>
+                    <span class="stat-label">معدل</span>
+                </div>
+                <div class="stat-item">
+                    <button class="btn-logout" id="btnLogout" style="display:none;">🚪 خروج</button>
+                    <button class="btn-logout" id="btnLoginShow" style="background:#ffb347; box-shadow:0 4px 0 #b86d1c; color:#2d1b0e;">🔑 ورود</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+        بخش دوم: انتخاب فصل (۷ فصل کتاب)
+        ========================================== -->
+        <div class="topic-selector" id="topicSelector">
+            <button class="topic-btn active" data-topic="chapter1">
+                <span class="topic-icon">🔢</span>
+                فصل ۱: عدد نویسی و الگوها
+            </button>
+            <button class="topic-btn" data-topic="chapter2">
+                <span class="topic-icon">📐</span>
+                فصل ۲: کسرها
+            </button>
+            <button class="topic-btn" data-topic="chapter3">
+                <span class="topic-icon">📊</span>
+                فصل ۳: نسبت، تناسب و درصد
+            </button>
+            <button class="topic-btn" data-topic="chapter4">
+                <span class="topic-icon">🔄</span>
+                فصل ۴: تقارن و چندضلعی‌ها
+            </button>
+            <button class="topic-btn" data-topic="chapter5">
+                <span class="topic-icon">🔟</span>
+                فصل ۵: عددهای اعشاری
+            </button>
+            <button class="topic-btn" data-topic="chapter6">
+                <span class="topic-icon">📏</span>
+                فصل ۶: اندازه‌گیری
+            </button>
+            <button class="topic-btn" data-topic="chapter7" style="grid-column: span 2;">
+                <span class="topic-icon">📊</span>
+                فصل ۷: آمار و احتمال
+            </button>
+        </div>
+
+        <!-- ==========================================
+        بخش سوم: آموزش ویدئویی
+        ========================================== -->
+        <div class="video-section" id="videoSection">
+            <span class="video-icon">🎥</span>
+            <span class="video-text" id="videoText">آموزش ویدئویی فصل عدد نویسی و الگوها</span>
+            <a href="#" class="video-btn" id="videoBtn" target="_blank">📺 مشاهده آموزش</a>
+        </div>
+
+        <!-- ==========================================
+        بخش چهارم: اطلاعات مرحله
+        ========================================== -->
+        <div class="level-info">
+            <span>📚 <span class="highlight" id="levelDisplay">مرحله ۱</span></span>
+            <span>📝 <span class="highlight" id="questionCounter">۰</span> / ۵</span>
+            <span>⭐ <span class="highlight" id="levelScore">۰</span> نمره</span>
+        </div>
+
+        <!-- ==========================================
+        بخش پنجم: کارت سوالات
+        ========================================== -->
+        <div class="question-card" id="questionCard">
+            <div class="question-text" id="questionDisplay">عدد ۵۰۴۳۰۷ را در جدول ارزش مکانی قرار دهید. رقم ۴ در کدام مرتبه است؟</div>
+            <div class="options-container" id="optionsContainer">
+                <button class="option-btn" data-index="0">هزار</button>
+                <button class="option-btn" data-index="1">ده هزار</button>
+                <button class="option-btn" data-index="2">صد هزار</button>
+            </div>
+            <div class="feedback" id="feedbackDisplay">👋 یک گزینه رو انتخاب کن!</div>
+        </div>
+
+        <!-- نوار پیشرفت -->
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- دکمه‌ها -->
+        <div id="buttonContainer">
+            <button class="next-btn" id="nextBtn">⏩ سوال بعدی</button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    مودال ورود / ثبت‌نام
+    ========================================== -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <h2>🔑 ورود / ثبت‌نام</h2>
+            <p style="color:#7a4a2a; margin-bottom:8px;">شماره تلفن خود را وارد کنید</p>
+            <label for="phoneInput">📱 شماره تلفن</label>
+            <input type="tel" id="phoneInput" placeholder="مثلاً ۰۹۱۲۳۴۵۶۷۸۹" maxlength="11">
+            <label for="nameInput">👤 نام (اختیاری)</label>
+            <input type="text" id="nameInput" placeholder="نام خود را وارد کنید">
+            <div class="modal-actions">
+                <button class="btn-login" id="btnLoginAction">🚀 ورود</button>
+                <button class="btn-register" id="btnRegisterAction">📝 ثبت‌نام</button>
+                <button class="btn-close-modal" id="btnCloseModal">✖</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    فایل مشترک سیستم کاربری + اسکریپت بازی
+    ========================================== -->
+    <script src="common.js"></script>
+    <script>
+        // ====================================================
+        //  بانک سوالات ریاضی پنجم بر اساس ۷ فصل کتاب
+        // ====================================================
+        const chapterQuestions = {
+            // ============================================================
+            // فصل ۱: عدد نویسی و الگوها (صفحه ۱۲)
+            // ============================================================
+            chapter1: {
+                name: 'عدد نویسی و الگوها',
+                videoText: 'آموزش ویدئویی فصل عدد نویسی و الگوها',
+                videoLink: '#',
+                questions: [
+                    { question: 'عدد ۵۰۴۳۰۷ را در جدول ارزش مکانی قرار دهید. رقم ۴ در کدام مرتبه است؟', options: ['هزار', 'ده هزار', 'صد هزار'], correct: 0 },
+                    { question: 'حاصل ۲۳ × ۳۷۱ را به‌دست آورید.', options: ['۸۵۳۳', '۸۴۳۳', '۸۶۳۳'], correct: 0 },
+                    { question: 'حاصل ۱۴۲۸ ÷ ۲۳ را به‌دست آورید.', options: ['۶۲', '۶۱', '۶۳'], correct: 0 },
+                    { question: '۱۰ تا ۱۰۰ تا یکی برابر است با چند؟', options: ['۱۰۰۰', '۱۰۰', '۱۰۰۰۰'], correct: 0 },
+                    { question: 'عدد ۷۳۰ را ۱۰۰ برابر کنیم، رقم ۷ در چه مرتبه‌ای قرار می‌گیرد؟', options: ['ده هزار', 'هزار', 'صد هزار'], correct: 0 },
+                    { question: 'نصف ۶ میلیون چند است؟', options: ['۳ میلیون', '۴ میلیون', '۲ میلیون'], correct: 0 },
+                    { question: '۵ میلیون به‌عالوه ۹ میلیون چند می‌شود؟', options: ['۱۴ میلیون', '۱۳ میلیون', '۱۵ میلیون'], correct: 0 },
+                    { question: '۸ صد هزار منها ۴ صد هزار چند است؟', options: ['۴ صد هزار', '۳ صد هزار', '۵ صد هزار'], correct: 0 },
+                ]
+            },
+            // ============================================================
+            // فصل ۲: کسرها (صفحه ۴۰)
+            // ============================================================
+            chapter2: {
+                name: 'کسرها',
+                videoText: 'آموزش ویدئویی فصل کسرها',
+                videoLink: '#',
+                questions: [
+                    { question: 'یک‌دوم (½) به اضافه یک‌چهارم (¼) چند می‌شود؟', options: ['سه‌چهارم (¾)', 'دوچهارم (¼)', 'چهارچهارم (1)'], correct: 0 },
+                    { question: 'سه‌چهارم (¾) منهای یک‌چهارم (¼) چند می‌شود؟', options: ['یک‌دوم (½)', 'دوچهارم (¼)', 'سه‌چهارم (¾)'], correct: 0 },
+                    { question: 'دو‌سوم (⅔) ضربدر سه‌چهارم (¾) چند می‌شود？', options: ['یک‌دوم (½)', 'شش‌دوازدهم (6/12)', 'سه‌چهارم (¾)'], correct: 0 },
+                    { question: 'چهار‌پنجم (⅘) تقسیم بر دو‌پنجم (⅖) چند می‌شود؟', options: ['۲', '۳', '۴'], correct: 0 },
+                    { question: 'پنج‌ششم (⅚) به اضافه یک‌ششم (⅙) چند می‌شود؟', options: ['۱', 'شش‌ششم (6/6)', 'پنج‌ششم (⅚)'], correct: 0 },
+                    { question: 'هفت‌هشتم (⅞) منهای سه‌هشتم (⅜) چند می‌شود؟', options: ['یک‌دوم (½)', 'چهارهشتم (4/8)', 'پنج‌هشتم (5/8)'], correct: 0 },
+                    { question: 'سه‌پنجم (⅗) ضربدر پنج‌سوم (5/3) چند می‌شود؟', options: ['۱', 'پانزده‌پانزده‌م (15/15)', 'سه‌پنجم (⅗)'], correct: 0 },
+                    { question: 'یک‌سوم (⅓) به اضافه دو‌سوم (⅔) چند می‌شود؟', options: ['۱', 'سه‌سوم (3/3)', 'دو‌سوم (⅔)'], correct: 0 },
+                ]
+            },
+            // ============================================================
+            // فصل ۳: نسبت، تناسب و درصد (صفحه ۷۸)
+            // ============================================================
+            chapter3: {
+                name: 'نسبت، تناسب و درصد',
+                videoText: 'آموزش ویدئویی فصل نسبت، تناسب و درصد',
+                videoLink: '#',
+                questions: [
+                    { question: 'نسبت ۴ به ۸ را ساده کنید:', options: ['۱ به ۲', '۲ به ۴', '۴ به ۸'], correct: 0 },
+                    { question: 'نسبت ۱۲ به ۱۸ را ساده کنید:', options: ['۲ به ۳', '۳ به ۴', '۶ به ۹'], correct: 0 },
+                    { question: 'اگر نسبت ۳ به ۵ باشد، ۱۵ به چند است؟', options: ['۲۵', '۲۰', '۳۰'], correct: 0 },
+                    { question: '۲۰ درصد از ۵۰ چند است؟', options: ['۱۰', '۱۲', '۸'], correct: 0 },
+                    { question: '۳۰ درصد از ۲۰۰ چند است؟', options: ['۶۰', '۵۰', '۷۰'], correct: 0 },
+                    { question: 'نسبت ۲۰ به ۳۰ را ساده کنید:', options: ['۲ به ۳', '۴ به ۶', '۱۰ به ۱۵'], correct: 0 },
+                    { question: 'اگر نسبت ۴ به ۷ باشد، ۲۸ به چند است؟', options: ['۴۹', '۴۲', '۵۶'], correct: 0 },
+                    { question: '۲۵ درصد از ۸۰ چند است؟', options: ['۲۰', '۲۲', '۱۸'], correct: 0 },
+                ]
+            },
+            // ============================================================
+            // فصل ۴: تقارن و چندضلعی‌ها (صفحه ۱۰۴)
+            // ============================================================
+            chapter4: {
+                name: 'تقارن و چندضلعی‌ها',
+                videoText: 'آموزش ویدئویی فصل تقارن و چندضلعی‌ها',
+                videoLink: '#',
+                questions: [
+                    { question: 'مجموع زاویه‌های یک مثلث چند درجه است؟', options: ['۱۸۰', '۳۶۰', '۹۰'], correct: 0 },
+                    { question: 'مجموع زاویه‌های یک چهارضلعی چند درجه است؟', options: ['۳۶۰', '۱۸۰', '۵۴۰'], correct: 0 },
+                    { question: 'در یک مربع، هر زاویه چند درجه است؟', options: ['۹۰', '۶۰', '۴۵'], correct: 0 },
+                    { question: 'چندضلعی با ۵ ضلع چه نام دارد؟', options: ['پنج‌ضلعی', 'چهارضلعی', 'شش‌ضلعی'], correct: 0 },
+                    { question: 'در متوازی‌الضلاع، اضلاع روبرو چه ویژگی دارند؟', options: ['مساوی و موازی', 'فقط مساوی', 'فقط موازی'], correct: 0 },
+                    { question: 'در لوزی، قطرها چه ویژگی دارند؟', options: ['بر هم عمودند', 'هم‌اندازه‌اند', 'موازی‌اند'], correct: 0 },
+                    { question: 'یک مثلث چند خط تقارن می‌تواند داشته باشد؟', options: ['۳', '۲', '۱'], correct: 0 },
+                    { question: 'زاویه‌ی ۹۰ درجه چه نام دارد؟', options: ['قائمه', 'حاده', 'منفرجه'], correct: 0 },
+                ]
+            },
+            // ============================================================
+            // فصل ۵: عددهای اعشاری (صفحه ۱۳۰)
+            // ============================================================
+            chapter5: {
+                name: 'عددهای اعشاری',
+                videoText: 'آموزش ویدئویی فصل عددهای اعشاری',
+                videoLink: '#',
+                questions: [
+                    { question: '۲۵/۷ + ۱۴/۳ = ?', options: ['۴۰/۰', '۴۰', '۳۹/۰'], correct: 0 },
+                    { question: '۵۶/۲ - ۲۳/۸ = ?', options: ['۳۲/۴', '۳۳/۴', '۳۱/۴'], correct: 0 },
+                    { question: '۱۲/۵ × ۴ = ?', options: ['۵۰', '۵۰/۰', '۴۸'], correct: 0 },
+                    { question: '۳۶/۴ ÷ ۴ = ?', options: ['۹/۱', '۹/۲', '۸/۱'], correct: 0 },
+                    { question: '۴۵/۶ + ۳۲/۴ = ?', options: ['۷۸/۰', '۷۸', '۷۷/۰'], correct: 0 },
+                    { question: 'عدد ۰/۲۳ را در جدول ارزش مکانی قرار دهید.', options: ['۲دهم و۳صدم', '۳دهم و۲صدم', '۲صدم و۳هزارم'], correct: 0 },
+                    { question: '۰/۴ + ۰/۳ = ?', options: ['۰/۷', '۰/۴۳', '۰/۳۴'], correct: 0 },
+                    { question: '۱/۸۴ چند است؟', options: ['۱ و ۸۴ صدم', '۱ و ۸۴ دهم', '۱۸ و ۴ صدم'], correct: 0 },
+                ]
+            },
+            // ============================================================
+            // فصل ۶: اندازه‌گیری (صفحه ۱۵۸)
+            // ============================================================
+            chapter6: {
+                name: 'اندازه‌گیری',
+                videoText: 'آموزش ویدئویی فصل اندازه‌گیری',
+                videoLink: '#',
+                questions: [
+                    { question: 'محیط دایره‌ای به شعاع ۷ سانتی‌متر (π=۲۲/۷) چند است？', options: ['۴۴', '۴۲', '۴۶'], correct: 0 },
+                    { question: 'مساحت لوزی با قطرهای ۴ و ۱۰ سانتی‌متر چند است؟', options: ['۲۰', '۱۸', '۲۲'], correct: 0 },
+                    { question: 'حجم مکعبی به ضلع ۴ چند سانتی‌متر مکعب است؟', options: ['۶۴', '۴۸', '۵۶'], correct: 0 },
+                    { question: '۱ لیتر چند سانتی‌متر مکعب است？', options: ['۱۰۰۰', '۱۰۰', '۱۰۰۰۰'], correct: 0 },
+                    { question: 'محیط دایره‌ای به قطر ۱۴ سانتی‌متر (π=۲۲/۷) چند است؟', options: ['۴۴', '۴۲', '۴۶'], correct: 0 },
+                    { question: 'مساحت ذوزنقه با قاعده‌های ۸ و ۶ و ارتفاع ۵ چند است؟', options: ['۳۵', '۳۰', '۴۰'], correct: 0 },
+                    { question: 'حجم مکعب مستطیل به ابعاد ۵، ۴ و ۳ چند است؟', options: ['۶۰', '۵۰', '۷۰'], correct: 0 },
+                    { question: 'گنجایش ظرفی به ابعاد ۱۰×۱۰×۱۰ سانتی‌متر چند لیتر است؟', options: ['۱', '۲', '۰/۵'], correct: 0 },
+                ]
+            },
+            // ============================================================
+            // فصل ۷: آمار و احتمال (صفحه ۱۸۶)
+            // ============================================================
+            chapter7: {
+                name: 'آمار و احتمال',
+                videoText: 'آموزش ویدئویی فصل آمار و احتمال',
+                videoLink: '#',
+                questions: [
+                    { question: 'میانگین عددهای ۴، ۶، ۸، ۱۰ چند است؟', options: ['۷', '۶', '۸'], correct: 0 },
+                    { question: 'میانگین عددهای ۱۲، ۱۵، ۱۸ چند است？', options: ['۱۵', '۱۴', '۱۶'], correct: 0 },
+                    { question: 'اگر مجموع ۴ عدد ۴۰ باشد، میانگین آنها چند است؟', options: ['۱۰', '۹', '۱۱'], correct: 0 },
+                    { question: 'در یک بازی عادالنه، احتمال برنده شدن هر بازیکن چقدر است؟', options: ['مساوی', 'بیشتر', 'کمتر'], correct: 0 },
+                    { question: 'اگر تاس را بیندازیم، احتمال آمدن عدد ۳ چند است？', options: ['یک‌ششم (1/6)', 'یک‌سوم (1/3)', 'یک‌دوم (1/2)'], correct: 0 },
+                    { question: 'میانگین عددهای ۲، ۴، ۶، ۸، ۱۰ چند است؟', options: ['۶', '۵', '۷'], correct: 0 },
+                    { question: 'در یک کیسه ۵ تیله سفید و ۳ تیله سیاه داریم. احتمال برداشتن تیله سفید چند است؟', options: ['۵/۸', '۳/۸', '۱/۲'], correct: 0 },
+                    { question: 'اگر سکه را بیندازیم، احتمال آمدن شیر چند است？', options: ['یک‌دوم (1/2)', 'یک‌چهارم (1/4)', 'یک‌سوم (1/3)'], correct: 0 },
+                ]
+            }
+        };
+
+        // ====================================================
+        //  متغیرهای بازی
+        // ====================================================
+        let currentTopic = 'chapter1';
+        let allQuestions = [];
+        let currentLevel = 1;
+        let currentLevelQuestions = [];
+        let currentIndex = 0;
+        let levelScore = 0;
+        let totalScore = 0;
+        let totalQuestionsAnswered = 0;
+        let isAnswered = false;
+        let isAllDone = false;
+        const QUESTIONS_PER_LEVEL = 5;
+
+        // ====================================================
+        //  عناصر DOM
+        // ====================================================
+        const questionDisplay = document.getElementById('questionDisplay');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const feedbackDisplay = document.getElementById('feedbackDisplay');
+        const nextBtn = document.getElementById('nextBtn');
+        const buttonContainer = document.getElementById('buttonContainer');
+        const progressBar = document.getElementById('progressBar');
+        const levelDisplay = document.getElementById('levelDisplay');
+        const questionCounter = document.getElementById('questionCounter');
+        const levelScoreDisplay = document.getElementById('levelScore');
+        const topicBtns = document.querySelectorAll('.topic-btn');
+        const videoText = document.getElementById('videoText');
+        const videoBtn = document.getElementById('videoBtn');
+
+        // ====================================================
+        //  توابع کمکی
+        // ====================================================
+        function shuffleOptions(q) {
+            const shuffled = q.options.map((text, index) => ({ text, index }));
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            const newOptions = shuffled.map(item => item.text);
+            const newCorrect = shuffled.findIndex(item => item.index === q.correct);
+            return { options: newOptions, correct: newCorrect };
+        }
+
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // ====================================================
+        //  توابع بازی
+        // ====================================================
+
+        function loadTopic(topic) {
+            currentTopic = topic;
+            isAllDone = false;
+
+            const topicData = chapterQuestions[topic];
+            if (!topicData) return;
+
+            videoText.textContent = topicData.videoText || 'آموزش ویدئویی';
+            videoBtn.href = topicData.videoLink || '#';
+
+            const rawQuestions = topicData.questions.map(q => {
+                const shuffled = shuffleOptions(q);
+                return {
+                    question: q.question,
+                    options: shuffled.options,
+                    correct: shuffled.correct
+                };
+            });
+
+            allQuestions = shuffleArray([...rawQuestions]);
+
+            currentLevel = 1;
+            levelScore = 0;
+            totalScore = 0;
+            totalQuestionsAnswered = 0;
+            loadLevel();
+
+            topicBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.topic === topic);
+            });
+        }
+
+        function loadLevel() {
+            const startIndex = (currentLevel - 1) * QUESTIONS_PER_LEVEL;
+            const endIndex = startIndex + QUESTIONS_PER_LEVEL;
+            currentLevelQuestions = allQuestions.slice(startIndex, endIndex);
+
+            if (currentLevelQuestions.length === 0) {
+                showAllDone();
+                return;
+            }
+
+            currentIndex = 0;
+            isAnswered = false;
+            updateLevelInfo();
+            renderQuestion();
+        }
+
+        function showAllDone() {
+            isAllDone = true;
+            const topicName = chapterQuestions[currentTopic].name;
+            questionDisplay.innerHTML = `🎉 تبریک! همه‌ی سوالات فصل ${topicName} رو با موفقیت گذروندی!`;
+            optionsContainer.innerHTML = '';
+            feedbackDisplay.className = 'feedback all-done';
+            feedbackDisplay.innerHTML = `
+                🌟 مجموع نمره شما: ${totalScore} از ${allQuestions.length} <br>
+                🔄 برای شروع مجدد، دکمه‌ی زیر را بزنید.
+            `;
+            progressBar.style.width = '100%';
+            levelDisplay.textContent = '🏆 پایان';
+            questionCounter.textContent = '🎯';
+            levelScoreDisplay.textContent = totalScore;
+
+            buttonContainer.innerHTML = `
+                <button class="btn-restart" id="restartBtn">🔄 شروع مجدد</button>
+            `;
+            document.getElementById('restartBtn').addEventListener('click', function() {
+                restartGame();
+            });
+        }
+
+        function restartGame() {
+            buttonContainer.innerHTML = `<button class="next-btn" id="nextBtn">⏩ سوال بعدی</button>`;
+            document.getElementById('nextBtn').addEventListener('click', goToNextLevel);
+
+            const topicData = chapterQuestions[currentTopic];
+            const rawQuestions = topicData.questions.map(q => {
+                const shuffled = shuffleOptions(q);
+                return {
+                    question: q.question,
+                    options: shuffled.options,
+                    correct: shuffled.correct
+                };
+            });
+            allQuestions = shuffleArray([...rawQuestions]);
+
+            currentLevel = 1;
+            levelScore = 0;
+            totalScore = 0;
+            totalQuestionsAnswered = 0;
+            isAllDone = false;
+            loadLevel();
+
+            document.getElementById('nextBtn').addEventListener('click', goToNextLevel);
+        }
+
+        function renderQuestion() {
+            if (currentIndex >= currentLevelQuestions.length) {
+                showLevelComplete();
+                return;
+            }
+
+            const q = currentLevelQuestions[currentIndex];
+            questionDisplay.innerHTML = q.question;
+
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.setAttribute('data-index', idx);
+                btn.textContent = opt;
+                btn.addEventListener('click', () => handleOptionClick(idx));
+                optionsContainer.appendChild(btn);
+            });
+
+            document.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('correct-highlight', 'wrong-highlight');
+                b.disabled = false;
+                b.style.pointerEvents = 'auto';
+            });
+
+            feedbackDisplay.className = 'feedback';
+            feedbackDisplay.innerHTML = '🤔 کدوم گزینه درسته؟ یکی رو انتخاب کن!';
+            isAnswered = false;
+            nextBtn.disabled = true;
+            updateLevelInfo();
+            updateProgressBar();
+        }
+
+        function handleOptionClick(selectedIndex) {
+            if (isAnswered) return;
+            const q = currentLevelQuestions[currentIndex];
+            const isCorrect = (selectedIndex === q.correct);
+
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach((btn, idx) => {
+                btn.disabled = true;
+                btn.style.pointerEvents = 'none';
+                if (idx === q.correct) {
+                    btn.classList.add('correct-highlight');
+                } else if (idx === selectedIndex && !isCorrect) {
+                    btn.classList.add('wrong-highlight');
+                }
+            });
+
+            feedbackDisplay.className = 'feedback';
+            if (isCorrect) {
+                feedbackDisplay.classList.add('correct');
+                feedbackDisplay.innerHTML = '🎉 آفرین! نمره گرفتی! +۱ ⭐';
+                levelScore += 1;
+                totalScore += 1;
+                if (typeof addCoin === 'function') {
+                    addCoin(1);
+                }
+            } else {
+                feedbackDisplay.classList.add('wrong');
+                feedbackDisplay.innerHTML = '😅 اشتباه گفتی! یک نمره منفی! -۱ ⭐';
+                levelScore -= 1;
+                totalScore -= 1;
+            }
+
+            isAnswered = true;
+            nextBtn.disabled = false;
+            totalQuestionsAnswered += 1;
+            updateLevelInfo();
+            updateProgressBar();
+
+            if (currentUser && typeof saveUser === 'function') {
+                currentUser.level = Math.floor((currentUser.coin || 0) / 5) + 1;
+                saveUser();
+                updateDashboard();
+            }
+        }
+
+        function goToNext() {
+            if (!isAnswered) return;
+
+            currentIndex++;
+            if (currentIndex < currentLevelQuestions.length) {
+                renderQuestion();
+            } else {
+                showLevelComplete();
+            }
+        }
+
+        function showLevelComplete() {
+            questionDisplay.innerHTML = '🎊 مرحله تمام شد!';
+            optionsContainer.innerHTML = '';
+            feedbackDisplay.className = 'feedback level-complete';
+
+            const emoji = levelScore >= 3 ? '🌟 عالی!' : (levelScore >= 1 ? '👍 خوب بود!' : '💪 تلاش کن!');
+            feedbackDisplay.innerHTML = `
+                📊 نمره‌ی این مرحله: ${levelScore} از ${QUESTIONS_PER_LEVEL} <br>
+                ${emoji}
+            `;
+            nextBtn.disabled = false;
+            nextBtn.textContent = '📈 مرحله بعدی';
+
+            if (currentUser && typeof saveUser === 'function') {
+                currentUser.coin = (currentUser.coin || 0) + Math.max(0, levelScore);
+                currentUser.level = Math.floor((currentUser.coin || 0) / 5) + 1;
+                saveUser();
+                updateDashboard();
+            }
+        }
+
+        function goToNextLevel() {
+            if (nextBtn.textContent === '📈 مرحله بعدی') {
+                currentLevel++;
+                loadLevel();
+                nextBtn.textContent = '⏩ سوال بعدی';
+            } else {
+                goToNext();
+            }
+        }
+
+        function updateLevelInfo() {
+            levelDisplay.textContent = `مرحله ${currentLevel}`;
+            const answered = Math.min(currentIndex, currentLevelQuestions.length);
+            questionCounter.textContent = `${answered} / ${currentLevelQuestions.length}`;
+            levelScoreDisplay.textContent = levelScore;
+        }
+
+        function updateProgressBar() {
+            const totalAnswered = (currentLevel - 1) * QUESTIONS_PER_LEVEL + currentIndex;
+            const totalAll = allQuestions.length;
+            const progress = totalAll > 0 ? (totalAnswered / totalAll) * 100 : 0;
+            progressBar.style.width = Math.min(progress, 100) + '%';
+        }
+
+        // ====================================================
+        //  رویدادها
+        // ====================================================
+
+        topicBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.dataset.topic === currentTopic) return;
+                loadTopic(this.dataset.topic);
+            });
+        });
+
+        // ====================================================
+        //  راه‌اندازی صفحه
+        // ====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 صفحه ریاضی پنجم بارگذاری شد');
+
+            if (typeof initUserSystem === 'function') {
+                initUserSystem();
+            }
+
+            nextBtn.addEventListener('click', goToNextLevel);
+
+            loadTopic('chapter1');
+        });
+    </script>
+</body>
+</html>

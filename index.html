@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>باغ یادگیری - صفحه اصلی</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffb347">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="باغ یادگیری">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <style>
+        /* ============================================
+           RESET & BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Vazir', 'Tahoma', sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #f9e7b3, #f5d9a0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 750px;
+            width: 100%;
+            background: #ffffffdd;
+            backdrop-filter: blur(8px);
+            border-radius: 80px 20px 80px 20px;
+            padding: 25px 20px 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border: 4px solid #ffb347;
+        }
+        h1 {
+            font-size: 2.2rem;
+            color: #d45a1a;
+            text-shadow: 3px 3px 0 #ffeeaa;
+            margin-bottom: 3px;
+            letter-spacing: 2px;
+        }
+        .subtitle {
+            font-size: 0.9rem;
+            color: #7a4a2a;
+            background: #ffdd99;
+            display: inline-block;
+            padding: 3px 20px;
+            border-radius: 50px;
+            margin-bottom: 18px;
+            font-weight: bold;
+        }
+
+        /* ============================================
+           USER DASHBOARD (فقط نام و شماره)
+           ============================================ */
+        .user-dashboard {
+            background: linear-gradient(135deg, #2d1b0e, #4d2e1b);
+            border-radius: 30px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            color: #ffdd99;
+            box-shadow: 0 8px 0 #1a0f08;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .user-avatar {
+            background: #ffb347;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d1b0e;
+        }
+        .user-details {
+            text-align: right;
+        }
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .user-phone {
+            font-size: 0.75rem;
+            color: #ffdd99;
+            opacity: 0.8;
+        }
+        .btn-logout {
+            background: #e74c3c;
+            border: none;
+            border-radius: 60px;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 3px 0 #a93226;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .btn-logout:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #a93226;
+        }
+        .btn-login {
+            background: #ffb347;
+            border: none;
+            border-radius: 60px;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #2d1b0e;
+            box-shadow: 0 3px 0 #b86d1c;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .btn-login:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #b86d1c;
+        }
+
+        /* ============================================
+           GRADE SELECTOR
+           ============================================ */
+        .grade-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+            background: #fff5e6;
+            padding: 15px 12px;
+            border-radius: 60px 20px 60px 20px;
+            border: 3px solid #ffb347;
+        }
+        .grade-btn {
+            padding: 18px 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: 3px solid #cc8f5a;
+            border-radius: 60px 20px 60px 20px;
+            background: #fff;
+            color: #4d2e1b;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 5px 0 #b97c4a;
+            text-decoration: none;
+            display: block;
+        }
+        .grade-btn:hover {
+            background: #ffb347;
+            color: #2d1b0e;
+            transform: scale(0.96);
+            box-shadow: 0 2px 0 #b97c4a;
+            border-color: #ffb347;
+        }
+        .grade-btn:active {
+            transform: scale(0.94);
+            box-shadow: 0 1px 0 #b97c4a;
+        }
+        .grade-icon {
+            display: block;
+            font-size: 2.2rem;
+            margin-bottom: 6px;
+        }
+        .grade-label {
+            display: block;
+            font-size: 0.95rem;
+        }
+        .coming-soon {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .coming-soon:hover {
+            background: #fff;
+            transform: scale(1);
+            box-shadow: 0 5px 0 #b97c4a;
+        }
+
+        /* ============================================
+           INFO BOX
+           ============================================ */
+        .info-box {
+            margin-top: 20px;
+            padding: 30px 20px;
+            background: #fef7e9;
+            border-radius: 60px 20px 60px 20px;
+            border: 3px dashed #ff8c42;
+        }
+        .info-box h2 {
+            font-size: 1.3rem;
+            color: #7a4a2a;
+        }
+        .info-box p {
+            color: #7a4a2a;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        .info-box .status {
+            font-size: 0.85rem;
+            color: #a04000;
+            margin-top: 15px;
+        }
+
+        /* ============================================
+           MODAL (ورود / ثبت‌نام)
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: #fff5e6;
+            border-radius: 60px 20px 60px 20px;
+            padding: 35px 25px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border: 4px solid #ffb347;
+            animation: popIn 0.3s ease;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-box h2 {
+            color: #2d1b0e;
+            margin-bottom: 18px;
+            font-size: 1.6rem;
+        }
+        .modal-box label {
+            display: block;
+            text-align: right;
+            font-weight: bold;
+            color: #4d2e1b;
+            margin-top: 12px;
+            margin-bottom: 5px;
+        }
+        .modal-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 3px solid #cc8f5a;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: #fff;
+            direction: ltr;
+            text-align: center;
+        }
+        .modal-box input:focus {
+            border-color: #ffb347;
+            outline: none;
+            box-shadow: 0 0 15px #ffb34755;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 4px 0 #8b5e38;
+        }
+        .modal-actions button:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #8b5e38;
+        }
+        .btn-login-modal {
+            background: #ffb347;
+            color: #2d1b0e;
+        }
+        .btn-register {
+            background: #27ae60;
+            color: #fff;
+            box-shadow: 0 4px 0 #1e7e34;
+        }
+        .btn-close-modal {
+            background: #e74c3c;
+            color: #fff;
+            box-shadow: 0 4px 0 #a93226;
+            flex: 0.4;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 550px) {
+            .game-container { padding: 15px 10px; }
+            h1 { font-size: 1.6rem; }
+            .user-dashboard { flex-direction: column; align-items: stretch; }
+            .grade-selector { grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 8px; }
+            .grade-btn { padding: 14px 8px; font-size: 0.9rem; }
+            .grade-icon { font-size: 1.8rem; }
+            .grade-label { font-size: 0.8rem; }
+            .modal-box { padding: 20px 15px; }
+        }
+        @media (max-width: 400px) {
+            .grade-selector { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🌈 باغ یادگیری</h1>
+        <div class="subtitle">✨ آموزش و سرگرمی ✨</div>
+
+        <!-- ==========================================
+        بخش اول: داشبورد کاربر (فقط نام و شماره)
+        ========================================== -->
+        <div class="user-dashboard" id="userDashboard">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">👤</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">میهمان عزیز</div>
+                    <div class="user-phone" id="userPhone">وارد نشده‌اید</div>
+                </div>
+            </div>
+            <div>
+                <button class="btn-logout" id="btnLogout" style="display:none;">🚪 خروج</button>
+                <button class="btn-login" id="btnLoginShow">🔑 ورود</button>
+            </div>
+        </div>
+
+        <!-- ==========================================
+        بخش دوم: انتخاب پایه تحصیلی
+        ========================================== -->
+        <div class="grade-selector" id="gradeSelector">
+            <a href="preschool.html" class="grade-btn" data-grade="preschool">
+                <span class="grade-icon">🧸</span>
+                <span class="grade-label">پیش‌دبستانی</span>
+            </a>
+            <a href="elementary.html" class="grade-btn" data-grade="elementary">
+                <span class="grade-icon">📚</span>
+                <span class="grade-label">ابتدایی</span>
+            </a>
+            <a href="#" class="grade-btn coming-soon" data-grade="middle" onclick="alert('⏳ صفحه‌ی راهنمایی به‌زودی اضافه می‌شود!')">
+                <span class="grade-icon">📖</span>
+                <span class="grade-label">راهنمایی</span>
+            </a>
+            <a href="#" class="grade-btn coming-soon" data-grade="general" onclick="alert('⏳ صفحه‌ی درسای عمومی به‌زودی اضافه می‌شود!')">
+                <span class="grade-icon">🌍</span>
+                <span class="grade-label">درسای عمومی</span>
+            </a>
+        </div>
+
+        <!-- ==========================================
+        بخش سوم: توضیحات
+        ========================================== -->
+        <div class="info-box">
+            <h2>🎯 یک پایه را انتخاب کنید</h2>
+            <p>برای شروع یادگیری، یکی از پایه‌های تحصیلی را انتخاب کنید</p>
+            <div class="status">
+                ✅ <strong>پیش‌دبستانی</strong> آماده است<br>
+                ✅ <strong>ابتدایی</strong> آماده است (۶ کلاس)<br>
+                ⏳ سایر پایه‌ها به‌زودی اضافه می‌شوند
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    مودال ورود / ثبت‌نام
+    ========================================== -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <h2>🔑 ورود / ثبت‌نام</h2>
+            <p style="color:#7a4a2a; margin-bottom:10px;">شماره تلفن خود را وارد کنید</p>
+            <label for="phoneInput">📱 شماره تلفن</label>
+            <input type="tel" id="phoneInput" placeholder="مثلاً ۰۹۱۲۳۴۵۶۷۸۹" maxlength="11">
+            <label for="nameInput">👤 نام (اختیاری)</label>
+            <input type="text" id="nameInput" placeholder="نام خود را وارد کنید">
+            <div class="modal-actions">
+                <button class="btn-login-modal" id="btnLoginAction">🚀 ورود</button>
+                <button class="btn-register" id="btnRegisterAction">📝 ثبت‌نام</button>
+                <button class="btn-close-modal" id="btnCloseModal">✖</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+    فایل مشترک سیستم کاربری
+    ========================================== -->
+    <script src="common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 صفحه اصلی بارگذاری شد');
+
+            if (typeof initUserSystem === 'function') {
+                initUserSystem();
+            }
+        });
+    </script>
+</body>
+</html>
